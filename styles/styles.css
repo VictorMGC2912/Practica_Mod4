@@ -1,0 +1,63 @@
+body {
+    margin: 0;
+    font-family: 'helvetica', sans;
+    font-size: 13px;
+    color: #c0c0c0;
+    background-color: #070C12;
+  }
+  
+  .movie-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    min-height: 100vh;
+  }
+  
+  .movie {
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .movie-poster {
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .movie-title {
+    margin-bottom: 2px;
+    font-size: 1.4em;
+    font-weight: bold;
+  }
+  
+  .movie-data {
+    font-size: .8em;
+    margin-bottom: 10px;
+  }
+  
+  .movie-description-heading {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .movie-description {
+    margin: 6px 0;
+    line-height: 1.4;
+  }
+  
+  .movie-other {
+    line-height: 1.4;
+    padding: 5px 0;
+    border-bottom: 1px solid #c0c0c0;
+  }
+  
+  .movie-other:last-child {
+    border: none;
+  }
+  
+  .movie-other span {
+    font-weight: bold;
+    padding-right: 5px;
+  }
