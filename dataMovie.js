@@ -7,7 +7,7 @@
 //   comedy: "Comedy",
 // });
 
-export const movie = [
+export const movies = [
   {
     title: "The Dark Knight",
     director: "Christopher Nolan",
