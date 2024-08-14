@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "serve": "echo \"Error: no test specified\" && exit 1"
+    "serve": "vite --host localhost --port 8080"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
 }

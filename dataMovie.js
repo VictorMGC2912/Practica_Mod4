@@ -69,7 +69,7 @@ export const movies = [
     actors: "Jesse Eisenberg, Andrew Garfield, Justin Timberlake",
     year: 2010,
     category: "Biography",
-    poster: "https://pics.filmaffinity.com/La_Red_Social-460155430-large.jpg",
+    poster: "https://m.media-amazon.com/images/S/pv-target-images/ea4f1c75ddd9fd937a77875d48f9ce8225ed954afcefabe7a2195311b1a97ddd.jpg",
     rating: 7.7,
     description:
       "Harvard student Mark Zuckerberg creates the social networking site that would become known as Facebook, but is later sued by two brothers who claimed he stole their idea, and the co-founder who was later squeezed out of the business.",
@@ -80,7 +80,7 @@ export const movies = [
     actors: "Robert De Niro, Ray Liotta, Joe Pesci",
     year: 1990,
     category: "Biography",
-    poster: "https://static.independent.co.uk/2020/09/17/10/goodfellas-poster.jpg?width=1200&height=1200&fit=crop",
+    poster: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-J2G4UO5XsCWhcqkhwrd9fAxNPnLggMUoSeT4eZEbSqpEvSIX75trmHXupxrBTPtpesGtWbXppU2LlFW0xr-zc3PcgLYOGx_lgeYSjpXO9WWk6nX8MW6o45oCzGI2UIOajDppLQqOCNUJ/s600/1.jpg",
     rating: 8.7,
     description:
       "The story of Henry Hill and his life in the mob, covering his relationship with his wife Karen Hill and his mob partners Jimmy Conway and Tommy DeVito in the Italian-American crime syndicate.",
@@ -108,7 +108,7 @@ export const movies = [
       "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
   },
   {
-    title: "Se7en",
+    title: "Seven",
     director: "David Fincher",
     actors: "Morgan Freeman, Brad Pitt, Kevin Spacey",
     year: 1995,
@@ -124,7 +124,7 @@ export const movies = [
     actors: "Tom Hanks, Robin Wright, Gary Sinise",
     year: 1994,
     category: "Drama",
-    poster: "https://pics.filmaffinity.com/Forrest_Gump-212765827-large.jpg",
+    poster: "https://m.media-amazon.com/images/I/91++WV6FP4L._AC_UF894,1000_QL80_.jpg",
     rating: 8.8,
     description:
       "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate, and other historical events unfold through the perspective of an Alabama man with an IQ of 75.",
@@ -135,7 +135,7 @@ export const movies = [
     actors: "Jamie Foxx, Christoph Waltz, Leonardo DiCaprio",
     year: 2012,
     category: "Drama",
-    poster: "https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2013/01/205576-critica-django-desencadenado.jpg?tf=3840x",
+    poster: "https://pics.filmaffinity.com/django_unchained-956246347-mmed.jpg",
     rating: 8.4,
     description:
       "With the help of a German bounty hunter, a freed slave sets out to rescue his wife from a brutal Mississippi plantation owner.",
@@ -168,7 +168,7 @@ export const movies = [
     actors: "Elijah Wood, Ian McKellen, Viggo Mortensen",
     year: 2002,
     category: "Adventure",
-    poster: "https://m.media-amazon.com/images/S/pv-target-images/aeab0d8dafeeb8bd55dbe9aa49074124b5aa07089301c0cfeda7ef58ac90be86.jpg",
+    poster: "https://images.moviesanywhere.com/e08bdd760138ad2b7fcb992943536bfa/d1935091-487e-44a8-a66f-97f892a621f9.jpg",
     rating: 8.7,
     description:
       "While Frodo and Sam edge closer to Mordor with the help of the shifty Gollum, the divided fellowship makes a stand against Sauron's new ally, Saruman, and his hordes of Isengard.",
@@ -223,7 +223,7 @@ export const movies = [
     actors: "Elijah Wood, Ian McKellen, Liv Tyler",
     year: 2003,
     category: "Adventure",
-    poster: "https://m.media-amazon.com/images/S/pv-target-images/2c70c38075924358afbbf210cab6ddf9ebed7a9d47c87713c8759d5758b7dadb.jpg",
+    poster: "https://m.media-amazon.com/images/M/MV5BNDgwY2YyNjctZTMxZC00ZTRlLThhN2QtMTAwYjUyODcyZDYxXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_FMjpg_UX1000_.jpg",
     rating: 8.9,
     description:
       "A meek Hobbit and eight companions set out on a journey to destroy the One Ring and the Dark Lord Sauron.",

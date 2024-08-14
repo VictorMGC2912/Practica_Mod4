@@ -1,63 +1,132 @@
 body {
-    margin: 0;
-    font-family: 'helvetica', sans;
-    font-size: 13px;
-    color: #c0c0c0;
-    background-color: #070C12;
-  }
-  
-  .movie-container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    min-height: 100vh;
-  }
-  
-  .movie {
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .movie-poster {
-    border-radius: 8px;
-    margin-bottom: 10px;
-  }
-  
-  .movie-title {
-    margin-bottom: 2px;
-    font-size: 1.4em;
-    font-weight: bold;
-  }
-  
-  .movie-data {
-    font-size: .8em;
-    margin-bottom: 10px;
-  }
-  
-  .movie-description-heading {
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-  
-  .movie-description {
-    margin: 6px 0;
-    line-height: 1.4;
-  }
-  
-  .movie-other {
-    line-height: 1.4;
-    padding: 5px 0;
-    border-bottom: 1px solid #c0c0c0;
-  }
-  
-  .movie-other:last-child {
-    border: none;
-  }
-  
-  .movie-other span {
-    font-weight: bold;
-    padding-right: 5px;
-  }
+  margin: 0;
+  margin: 0;
+  font-family: "helvetica", sans;
+  font-size: 13px;
+}
+/* BOTONES GRID Y LIST */
+.buttons-container {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  margin-right: 5px;
+  background-color: #070c12;
+  padding-top: 25px;
+  gap: 10px;
+}
+.fake-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  font-size: 2.5vh;
+}
+svg {
+  width: 1em;
+  height: 3em;
+}
+/* VISTA GRID */
+.fondo-grid {
+  color: #c0c0c0;
+  background-color: #070c12;
+}
+.grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 30px;
+  min-height: 100vh;
+  gap: 25px;
+}
+.movie-grid {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+}
+.movie-poster-grid {
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.movie-title-grid {
+  margin-bottom: 2px;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.movie-data-grid {
+  font-size: 0.8em;
+  margin-bottom: 10px;
+}
+.movie-description-grid {
+  margin: 6px 0;
+  line-height: 1.4;
+  margin-bottom: 25px;
+}
+.movie-director-grid {
+  font-weight: bold;
+  line-height: 1.4;
+  padding: 5px 0;
+  border-bottom: 1px solid #c0c0c0;
+}
+.movie-description-grid:last-child {
+  border: none;
+}
+.movie-actors-grid {
+  font-weight: bold;
+  padding-right: 5px;
+}
+/* VISTA LIST */
+.fondo-list {
+  color: #c0c0c0;
+  background-color: #102947;
+}
+.list {
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  align-items: start;
+  gap: 25px;
+  margin: 2em 5em 0 5em;
+}
+.movie-list {
+  width: auto;
+  height: 3.125rem;
+  display: flex;
+}
+.movie-poster-list {
+  width: 4.68rem;
+  height: 3.125rem;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.movie-title-list {
+  padding: 12px 0 0 20px;
+  width: 300px;
+  margin-bottom: 2px;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.movie-data-list {
+  font-size: 0.8em;
+  margin-bottom: 10px;
+}
+.movie-description-list {
+  margin: 6px 0;
+  line-height: 1.4;
+  margin-bottom: 25px;
+}
+.movie-director-list {
+  font-weight: bold;
+  line-height: 1.4;
+  padding: 5px 0;
+  border-bottom: 1px solid #c0c0c0;
+}
+.movie-description-list:last-child {
+  border: none;
+}
+.movie-actors-list {
+  font-weight: bold;
+  padding-right: 5px;
+}
