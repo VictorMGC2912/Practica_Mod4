@@ -1,11 +1,12 @@
-// export const categories = Object.freeze({
-//   drama: "Drama",
-//   action: "Action",
-//   crime: "Crime",
-//   biography: "Biography",
-//   adventure: "Adventure",
-//   comedy: "Comedy",
-// });
+export const categories = Object.freeze({
+  Filtro: " ",
+  Drama: "Drama",
+  Action: "Action",
+  Crime: "Crime",
+  Biography: "Biography",
+  Adventure: "Adventure",
+  Comedy: "Comedy",
+});
 
 export const movies = [
   {

@@ -1,11 +1,39 @@
-import { movies } from "./dataMovie";
+import { movies, categories } from "./dataMovie";
 console.log(movies);
 
-//Crear botones GRID y LIST
+
+// CREAR CONTAINER DEL SELECT Y BOTONES
+
 const containerRoot = document.getElementById("root");
 const containerButton = document.createElement("div");
 containerButton.className = "buttons-container";
 containerRoot.appendChild(containerButton);
+
+//CREAR DESPLEGABLE SELECT
+
+initFilter();
+
+function initFilter() {
+    const select = document.createElement('select');
+    select.setAttribute('name', 'categories');
+    addFilterOptions(select);
+    select.addEventListener('change', () => {
+        console.log(select.value);
+    })
+}
+
+function addFilterOptions(select) {
+    Object.entries(categories).forEach(([key, value]) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = key;
+        select.appendChild(option);
+    })
+    select.className = "select";
+    containerButton.appendChild(select);
+}
+
+//Crear botones GRID y LIST
 
 const buttonGrid = document.createElement("button");
 buttonGrid.className = "fake-button";
@@ -37,7 +65,7 @@ buttonGrid.appendChild(svgGrid);
 //AÑADIR PELICULAS A ROOT
 const movieContainer = document.createElement("div");
 movieContainer.className = "grid";
-const movieElement = createMovieElement(movies);
+const movieElement = createMovieGridElement(movies);
 const divRoot = document.getElementById("root");
 divRoot.className = "fondo-grid";
 divRoot.appendChild(movieContainer);
@@ -83,8 +111,8 @@ function createActorsElement(actors) {
     return element
 }
 
-//FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY
-function createMovieElement(movies) {
+//FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE GRID
+function createMovieGridElement(movies) {
     let container = movieContainer;
 
     movies.forEach((movie) => {
@@ -102,12 +130,30 @@ function createMovieElement(movies) {
         container.appendChild(movieElement);
     })
 }
+//FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE LIST
+// function createMovieListElement(movies) {
+//     let container = movieContainer;
+
+//     movies.forEach((movie) => {
+//         const { poster, title, rating } = movie;
+//         const movieElement = document.createElement("div");
+
+//         movieElement.className = "movie-grid";
+//         movieElement.appendChild(createPosterElement(poster));
+//         movieElement.appendChild(createTitleElement(title));
+//         movieElement.appendChild(createDataElement(rating));
+
+//         container.appendChild(movieElement);
+//     })
+// }
 
 // ESCUCHA DE LOS EVENTOS CLICK
 buttonGrid.addEventListener('click', clickGrid);
 buttonList.addEventListener('click', clickList);
 
 function clickGrid() {
+    //const movieElement = createMovieGridElement(movies);
+    //movieContainer.innerHTML = " ";
     const fondoGrid = document.querySelectorAll('.fondo-list');
     fondoGrid.forEach((grid) => grid.classList.remove('fondo-list'));
     fondoGrid.forEach((grid) => grid.classList.add('fondo-grid'));
@@ -146,6 +192,9 @@ function clickGrid() {
 
 }
 function clickList() {
+    //movieContainer.innerHTML = "";
+    //const movieElement = createMovieListElement(movies);
+
     const fondoList = document.querySelectorAll('.fondo-grid');
     fondoList.forEach((list) => list.classList.remove('fondo-grid'));
     fondoList.forEach((list) => list.classList.add('fondo-list'));
@@ -181,7 +230,5 @@ function clickList() {
     const actorsList = document.querySelectorAll('.movie-actors-grid');
     actorsList.forEach((actors) => actors.classList.remove('movie-actors-grid'));
     actorsList.forEach((actors) => actors.classList.add('movie-actors-list'));
-
 }
-
 
