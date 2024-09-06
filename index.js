@@ -1,37 +1,123 @@
-import { movies, categories } from "./dataMovie";
+import { movies, categories, opciones } from "./dataMovie";
 console.log(movies);
 
 
-// CREAR CONTAINER DEL SELECT Y BOTONES
+// Crear container del select y botones
 
 const containerRoot = document.getElementById("root");
 const containerButton = document.createElement("div");
 containerButton.className = "buttons-container";
 containerRoot.appendChild(containerButton);
 
-//CREAR DESPLEGABLE SELECT
+// Crear elementos de entrada para filtros y botón de reset
+const resetButton = document.createElement('button');
+resetButton.className = 'reset';
+resetButton.textContent = 'Reset Filtros';
+resetButton.addEventListener('click', resetFilters);
+containerButton.appendChild(resetButton);
 
-initFilter();
+// Crear input de entrada de valores para la busqueda por coincidencias
+const inputBusqueda = document.createElement('input');
+inputBusqueda.setAttribute('type', 'text');
+inputBusqueda.setAttribute('placeholder', 'Buscar...');
+inputBusqueda.className = 'busqueda';
+containerButton.appendChild(inputBusqueda);
 
-function initFilter() {
-    const select = document.createElement('select');
-    select.setAttribute('name', 'categories');
-    addFilterOptions(select);
-    select.addEventListener('change', () => {
-        console.log(select.value);
-    })
+// Crear desplegable de ordenacion
+const selectOrdenar = document.createElement('select');
+selectOrdenar.setAttribute('name', 'ordenar');
+selectOrdenar.className = "ordenar";
+
+// Agregar opciones de ordenación
+opciones.forEach(opcion => {
+    const optionElement = document.createElement('option');
+    optionElement.value = opcion.valor;
+    optionElement.textContent = opcion.texto;
+    selectOrdenar.appendChild(optionElement);
+});
+containerButton.appendChild(selectOrdenar);
+
+// Crear desplegable de categorias
+const selectCategorias = document.createElement('select');
+selectCategorias.setAttribute('name', 'categories');
+selectCategorias.className = 'select';
+addFilterOptions(selectCategorias); // Añadir opciones de categorías
+containerButton.appendChild(selectCategorias);
+
+// Función principal para aplicar todos los filtros
+function aplicarFiltros() {
+    const textoBusqueda = inputBusqueda.value.toLowerCase();
+    const criterioOrdenacion = selectOrdenar.value;
+    const categoriaSeleccionada = selectCategorias.value;
+
+    // Filtrar por búsqueda
+    let moviesFiltradas = movies.filter(movie =>
+        movie.title.toLowerCase().includes(textoBusqueda) ||
+        movie.director.toLowerCase().includes(textoBusqueda) ||
+        movie.description.toLowerCase().includes(textoBusqueda) ||
+        movie.year.toString().includes(textoBusqueda)
+    );
+
+    // Filtrar por categoría
+    if (categoriaSeleccionada !== 'default') {
+        moviesFiltradas = moviesFiltradas.filter(movie => movie.category === categoriaSeleccionada);
+    }
+
+    // Ordenar
+    switch (criterioOrdenacion) {
+        case 'tituloAsc':
+            moviesFiltradas.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        case 'tituloDesc':
+            moviesFiltradas.sort((a, b) => b.title.localeCompare(a.title));
+            break;
+        case 'directorAsc':
+            moviesFiltradas.sort((a, b) => a.director.localeCompare(b.director));
+            break;
+        case 'directorDesc':
+            moviesFiltradas.sort((a, b) => b.director.localeCompare(a.director));
+            break;
+        case 'añoAsc':
+            moviesFiltradas.sort((a, b) => a.year - b.year);
+            break;
+        case 'añoDesc':
+            moviesFiltradas.sort((a, b) => b.year - a.year);
+            break;
+    }
+
+    // Mostrar resultados filtrados
+    createMovieGridElement(moviesFiltradas);
 }
+
+// Eventos de cambio para aplicar filtros
+inputBusqueda.addEventListener('input', aplicarFiltros);
+selectOrdenar.addEventListener('change', aplicarFiltros);
+selectCategorias.addEventListener('change', aplicarFiltros);
+
+// Función para resetear filtros
+function resetFilters() {
+    inputBusqueda.value = '';
+    selectOrdenar.selectedIndex = 0;
+    selectCategorias.selectedIndex = 0;
+    aplicarFiltros(); // Volver a aplicar filtros con valores por defecto
+}
+
+// Funciones auxiliares existentes (addFilterOptions)
 
 function addFilterOptions(select) {
+    const defaultOption = document.createElement('option');
+    defaultOption.value = 'default';
+    defaultOption.textContent = 'Mostrar Todas';
+    select.appendChild(defaultOption);
+
     Object.entries(categories).forEach(([key, value]) => {
         const option = document.createElement('option');
-        option.value = value;
-        option.textContent = key;
+        option.value = key;
+        option.textContent = value;
         select.appendChild(option);
-    })
-    select.className = "select";
-    containerButton.appendChild(select);
+    });
 }
+
 
 //Crear botones GRID y LIST
 
@@ -114,6 +200,7 @@ function createActorsElement(actors) {
 //FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE GRID
 function createMovieGridElement(movies) {
     let container = movieContainer;
+    container.innerHTML = "";
 
     movies.forEach((movie) => {
         const { poster, title, rating, year, description, director, actors } = movie;
@@ -131,29 +218,27 @@ function createMovieGridElement(movies) {
     })
 }
 //FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE LIST
-// function createMovieListElement(movies) {
-//     let container = movieContainer;
+function createMovieListElement(movies) {
+    let container = movieContainer;
 
-//     movies.forEach((movie) => {
-//         const { poster, title, rating } = movie;
-//         const movieElement = document.createElement("div");
+    movies.forEach((movie) => {
+        const { poster, title, rating, year } = movie;
+        const movieElement = document.createElement("div");
 
-//         movieElement.className = "movie-grid";
-//         movieElement.appendChild(createPosterElement(poster));
-//         movieElement.appendChild(createTitleElement(title));
-//         movieElement.appendChild(createDataElement(rating));
+        movieElement.className = "movie-grid";
+        movieElement.appendChild(createPosterElement(poster));
+        movieElement.appendChild(createTitleElement(title));
+        movieElement.appendChild(createDataElement(rating, year));
 
-//         container.appendChild(movieElement);
-//     })
-// }
+        container.appendChild(movieElement);
+    })
+}
 
 // ESCUCHA DE LOS EVENTOS CLICK
 buttonGrid.addEventListener('click', clickGrid);
 buttonList.addEventListener('click', clickList);
 
 function clickGrid() {
-    //const movieElement = createMovieGridElement(movies);
-    //movieContainer.innerHTML = " ";
     const fondoGrid = document.querySelectorAll('.fondo-list');
     fondoGrid.forEach((grid) => grid.classList.remove('fondo-list'));
     fondoGrid.forEach((grid) => grid.classList.add('fondo-grid'));
@@ -192,8 +277,8 @@ function clickGrid() {
 
 }
 function clickList() {
-    //movieContainer.innerHTML = "";
-    //const movieElement = createMovieListElement(movies);
+    movieContainer.innerHTML = "";
+    const movieElement = createMovieListElement(movies);
 
     const fondoList = document.querySelectorAll('.fondo-grid');
     fondoList.forEach((list) => list.classList.remove('fondo-grid'));

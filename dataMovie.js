@@ -1,5 +1,5 @@
 export const categories = Object.freeze({
-  Filtro: " ",
+  //Categoria: "Categoria",
   Drama: "Drama",
   Action: "Action",
   Crime: "Crime",
@@ -7,6 +7,15 @@ export const categories = Object.freeze({
   Adventure: "Adventure",
   Comedy: "Comedy",
 });
+
+export const opciones = [
+  { valor: 'tituloAsc', texto: 'Título (A-Z)' },
+  { valor: 'tituloDesc', texto: 'Título (Z-A)' },
+  { valor: 'directorAsc', texto: 'Director (A-Z)' },
+  { valor: 'directorDesc', texto: 'Director (Z-A)' },
+  { valor: 'añoAsc', texto: 'Año (Ascendente)' },
+  { valor: 'añoDesc', texto: 'Año (Descendente)' }
+];
 
 export const movies = [
   {

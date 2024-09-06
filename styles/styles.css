@@ -27,7 +27,28 @@ svg {
   width: 1em;
   height: 3em;
 }
-select {
+/* BOTONES DE CATEGORIAS, ORDENACION, BUSQUEDA, RESET */
+.select {
+  height: 2em;
+  width: 8em;
+  margin-bottom: 15px;
+  margin-right: 45px;
+}
+.ordenar {
+  height: 2em;
+  width: 11em;
+  margin-bottom: 15px;
+  margin-right: 45px;
+}
+.busqueda {
+  height: 1.55em;
+  width: 11em;
+  margin-bottom: 15px;
+  margin-right: 45px;
+}
+.reset {
+  height: 1.55em;
+  width: 7em;
   margin-bottom: 15px;
   margin-right: 45px;
 }
