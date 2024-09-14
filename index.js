@@ -45,6 +45,7 @@ addFilterOptions(selectCategorias); // Añadir opciones de categorías
 containerButton.appendChild(selectCategorias);
 
 // Función principal para aplicar todos los filtros
+let isClicked = false;
 function aplicarFiltros() {
     const textoBusqueda = inputBusqueda.value.toLowerCase();
     const criterioOrdenacion = selectOrdenar.value;
@@ -85,7 +86,7 @@ function aplicarFiltros() {
             break;
     }
 
-    // Mostrar resultados filtrados
+    //Mostrar resultados filtrados
     createMovieGridElement(moviesFiltradas);
 }
 
@@ -120,7 +121,6 @@ function addFilterOptions(select) {
 
 
 //Crear botones GRID y LIST
-
 const buttonGrid = document.createElement("button");
 buttonGrid.className = "fake-button";
 containerButton.appendChild(buttonGrid);
@@ -220,12 +220,13 @@ function createMovieGridElement(movies) {
 //FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE LIST
 function createMovieListElement(movies) {
     let container = movieContainer;
+    container.innerHTML = "";
 
     movies.forEach((movie) => {
         const { poster, title, rating, year } = movie;
         const movieElement = document.createElement("div");
 
-        movieElement.className = "movie-grid";
+        movieElement.className = "movie-list";
         movieElement.appendChild(createPosterElement(poster));
         movieElement.appendChild(createTitleElement(title));
         movieElement.appendChild(createDataElement(rating, year));
@@ -239,6 +240,10 @@ buttonGrid.addEventListener('click', clickGrid);
 buttonList.addEventListener('click', clickList);
 
 function clickGrid() {
+    movieContainer.innerHTML = "";
+    isClicked = false;
+    const movieElement = createMovieGridElement(movies);
+
     const fondoGrid = document.querySelectorAll('.fondo-list');
     fondoGrid.forEach((grid) => grid.classList.remove('fondo-list'));
     fondoGrid.forEach((grid) => grid.classList.add('fondo-grid'));
@@ -278,6 +283,7 @@ function clickGrid() {
 }
 function clickList() {
     movieContainer.innerHTML = "";
+    isClicked = true;
     const movieElement = createMovieListElement(movies);
 
     const fondoList = document.querySelectorAll('.fondo-grid');
