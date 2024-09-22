@@ -157,44 +157,72 @@ divRoot.className = "fondo-grid";
 divRoot.appendChild(movieContainer);
 
 //FUNCIONES PARA CREAR ELEMENTOS DE LAS PELICULAS
-function createPosterElement(poster) {
+function createGridPosterElement(poster) {
     const element = document.createElement("img");
     element.src = poster;
     element.className = 'movie-poster-grid';
     return element;
 }
 
-function createTitleElement(title) {
+function createGridTitleElement(title) {
     const element = document.createElement("div");
     element.className = "movie-title-grid";
     element.textContent = title;
     return element;
 }
 
-function createDataElement(rating, year) {
+function createGridDataElement(rating, year) {
     const element = document.createElement("div");
     element.className = "movie-data-grid";
     element.textContent = `Rating: ${rating} | ${year}`;
     return element;
 }
 
-function createDescriptionElement(description) {
+function createGridDescriptionElement(description) {
     const element = document.createElement("div");
     element.className = "movie-description-grid";
     element.textContent = description;
     return element;
 }
-function createDirectorElement(director) {
+function createGridDirectorElement(director) {
     const element = document.createElement("div");
     element.className = "movie-director-grid";
     element.textContent = `Director: ${director}`;
     return element;
 }
-function createActorsElement(actors) {
+function createGridActorsElement(actors) {
     const element = document.createElement("div");
     element.className = "movie-actors-grid";
     element.textContent = `Actors: ${actors}`;
     return element
+}
+//FUNCIONES PARA CREAR ELEMENTOS DE LAS PELICULAS LIST
+function createListPosterElement(poster) {
+    const element = document.createElement("img");
+    element.src = poster;
+    element.className = 'movie-poster-list';
+    return element;
+}
+
+function createListTitleElement(title) {
+    const element = document.createElement("div");
+    element.className = "movie-title-list";
+    element.textContent = title;
+    return element;
+}
+
+function createListDataElement(rating, year) {
+    const element = document.createElement("div");
+    element.className = "movie-data-list";
+    element.textContent = `Rating: ${rating} | ${year}`;
+    return element;
+}
+
+function createListDescriptionElement(description) {
+    const element = document.createElement("div");
+    element.className = "movie-description-list";
+    element.textContent = description;
+    return element;
 }
 
 //FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE GRID
@@ -207,12 +235,12 @@ function createMovieGridElement(movies) {
         const movieElement = document.createElement("div");
 
         movieElement.className = "movie-grid";
-        movieElement.appendChild(createPosterElement(poster));
-        movieElement.appendChild(createTitleElement(title));
-        movieElement.appendChild(createDataElement(rating, year));
-        movieElement.appendChild(createDescriptionElement(description));
-        movieElement.appendChild(createDirectorElement(director));
-        movieElement.appendChild(createActorsElement(actors));
+        movieElement.appendChild(createGridPosterElement(poster));
+        movieElement.appendChild(createGridTitleElement(title));
+        movieElement.appendChild(createGridDataElement(rating, year));
+        movieElement.appendChild(createGridDescriptionElement(description));
+        movieElement.appendChild(createGridDirectorElement(director));
+        movieElement.appendChild(createGridActorsElement(actors));
 
         container.appendChild(movieElement);
     })
@@ -227,9 +255,10 @@ function createMovieListElement(movies) {
         const movieElement = document.createElement("div");
 
         movieElement.className = "movie-list";
-        movieElement.appendChild(createPosterElement(poster));
-        movieElement.appendChild(createTitleElement(title));
-        movieElement.appendChild(createDataElement(rating, year));
+        movieElement.appendChild(createListPosterElement(poster));
+        movieElement.appendChild(createListTitleElement(title));
+        movieElement.appendChild(createListDescriptionElement(description));
+        movieElement.appendChild(createListDataElement(rating, year));
 
         container.appendChild(movieElement);
     })

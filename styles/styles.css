@@ -113,10 +113,10 @@ svg {
   flex-direction: column;
   align-items: center;
   gap: 25px;
-  margin: 2em 5em 0 5em;
+  margin: 2em 2em 0 2em;
 }
 .movie-list {
-  width: auto;
+  width: 100em;
   height: 3.125rem;
   display: flex;
   align-items: center;
@@ -126,36 +126,35 @@ svg {
   list-style-type: decimal;
 }
 .movie-poster-list {
-  width: 4.68rem;
   height: 3.125rem;
   border-radius: 8px;
   margin-bottom: 10px;
 }
 .movie-title-list {
-  padding: 7px 0 0 20px;
-  width: 150px;
+  display: flex;
+  justify-content: start;
+  padding: 7px 5px 0 20px;
+  width: auto;
   font-size: 1.1em;
   font-weight: bold;
   margin-right: 20px;
 }
 .movie-data-list {
+  width: 25em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 0.8em;
-  margin: 0 10px 10px 10px;
+  padding: 0 0px 20px 10px;
 }
 .movie-description-list {
-  margin: 6px 0;
+  width: auto;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  margin: 6px 5px 5px 5px;
   line-height: 1.4;
-  margin-bottom: 25px;
-}
-.movie-director-list {
-  font-weight: bold;
-  line-height: 1.4;
-  padding: 5px 0;
 }
 .movie-description-list:last-child {
   border: none;
-}
-.movie-actors-list {
-  font-weight: bold;
-  padding-right: 5px;
 }
