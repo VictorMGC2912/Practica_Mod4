@@ -1,5 +1,8 @@
 import { listOptions } from "./listOptions-api";
-import { showMovieSearch } from "./movie-id-fetch";
+import { showMovieSearch, getMovieRecommendations, getMovieDetails } from "./movie-id-fetch";
+// import { searchString } from "./movie-search-api";
+// import { addMovieGrid, clickGrid, createMovieGridElement } from "./movie-grid-api";
+// import { addMovieList, clickList, createMovieListElement } from "./movie-list-api";
 //753342
 // Crear container del select y botones
 
@@ -12,44 +15,62 @@ containerRoot.appendChild(containerButton);
 const resetButton = document.createElement('button');
 resetButton.className = 'reset';
 resetButton.textContent = 'Reset Filtros';
-// resetButton.addEventListener('click', resetFilters);
 containerButton.appendChild(resetButton);
+
+resetButton.addEventListener('click', resetFilters); // FUNCION PARA RESETEAR FILTROS
+function resetFilters() {
+    inputBusqueda.value = '';
+    selectCategorias.selectedIndex = 0;
+    addMovieGrid();
+}
 
 // Crear input de entrada de valores para la busqueda por coincidencias
 const inputBusqueda = document.createElement('input');
+inputBusqueda.setAttribute('id', 'search')
 inputBusqueda.setAttribute('type', 'text');
 inputBusqueda.setAttribute('placeholder', 'Buscar...');
 inputBusqueda.className = 'busqueda';
 containerButton.appendChild(inputBusqueda);
 
-//BUSQUEDA POR PALABRAS
-inputBusqueda.addEventListener('keyup', searchEventHandler);
-const int = setInterval(validateTime, 500)
-const debounceTime = 1000;
-let lastKeyup;
+//BUSQUEDA POR PALABRAS EN EL INPUT
+inputBusqueda.addEventListener('input', (event) => {
+    const inputValor = event.target.value;
 
-function searchEventHandler() { // Funcion para guardar la fecha en la que escribo
-    lastKeyup = Number(new Date());
-}
+    showMovieSearch(inputValor).then((datos) => {
+        if (datos && datos.length > 0) {
+            const movieContainer = document.getElementById('movieContainer');
+            movieContainer.innerHTML = '';
+            datos.forEach(movie => {
+                const movieElement = createMovieGridElement(movie);
+                movieContainer.appendChild(movieElement);
+            })
+        } else {
+            console.log('no se encontraron resultados');
+        }
+    }).catch(error => {
+        console.log('error en la busqueda', error);
+    });
+});
 
-function searchInterval() {
-    const diff = +(new Date()) - lastKeyup;
-    if (diff >= debounceTime) {
-        showMovieSearch();
-    }
-}
+//Desde movie-id-fetch, me da los valores de la pelicula que le pase por ID en el input. SOLO LO PINTA EL JSON POR CONSOLA
+inputBusqueda.addEventListener('input', (event) => {
+    const inputMovieId = event.target.value;
 
-
-showMovieSearch('batman').then(console.log);
-
-//Desde movie-id-fetch, me da los valores de la pelicula que le pase por ID en el input
-// function searchId(movieId) {
-//     const id = inputBusqueda.value;
-//     movieId = id
-//     const movieSearch = showMovieDetail(movieId);
-
-//     return addMovieGrid(movieSearch);
-// }
+    getMovieDetails(inputMovieId).then((id) => {
+        if (id && id.length > 0) {
+            const movieContainer = document.getElementById('movieContainer');
+            movieContainer.innerHTML = '';
+            id.forEach(movie => {
+                const movieElement = createMovieGridElement(movie);
+                movieContainer.appendChild(movieElement);
+            })
+        } else {
+            console.log('no se encontraron resultados');
+        }
+    }).catch(error => {
+        console.log('error en la busqueda', error);
+    });
+});
 
 // Crear desplegable de categorias
 const selectCategorias = document.createElement('select');
@@ -61,7 +82,6 @@ containerButton.appendChild(selectCategorias);
 // // Funciones auxiliares existentes (addFilterOptions)
 
 function addFilterOptions(select) {
-
     Object.entries(listOptions).forEach(([key, value]) => {
         const option = document.createElement('option');
         option.value = value;
@@ -69,7 +89,6 @@ function addFilterOptions(select) {
         select.appendChild(option);
     });
 }
-
 
 //Crear botones GRID y LIST
 const buttonGrid = document.createElement("button");
@@ -171,12 +190,11 @@ function createListDescriptionElement(overview) {
 }
 
 // Traer las películas desde la API
-
 const baseUrl = `https://api.themoviedb.org/3/movie/`;
 const apiKey = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
 const langIso = 'language=es-ES';
 
-// Agregar las películas al contenedor en forma de grid o list, segun la clase que tenga.
+//Agregar las películas al contenedor en forma de grid o list, segun la clase que tenga.
 selectCategorias.addEventListener('change', function () {
     const selectCategory = this.value;
     //QUIERO QUE SI EL MOVIECONTAINER ESTA EN GRID, ME SIGA FILTRANDO LAS CATEGORIAS POR GRID, IDEM CON LIST, PERO ME ESTA FALLANDO, SOLO FILTRA EN MODO GRID
@@ -195,7 +213,6 @@ async function getMovies(userOption) {
         const url = `${baseUrl}${userOption}?api_key=${apiKey}&${langIso}`;
         const response = await fetch(url);
         const json = await response.json();
-        console.log(json);
         return json.results;
     } catch (error) {
         console.log(error);
@@ -211,7 +228,6 @@ export async function addMovieGrid() {
     }
     movieContainer.innerHTML = ''; //Limpiar el contenedor antes de añadir nuevas peliculas
     const movies = await getMovies(selectCategorias.value);
-    console.log(movies);
     if (movies && movies.length > 0) {
         movies.forEach(movie => {
             const movieElement = createMovieGridElement(movie);
@@ -220,8 +236,7 @@ export async function addMovieGrid() {
     }
 }
 
-
-function createMovieGridElement(movieObj) {
+export function createMovieGridElement(movieObj) {
     const movieElement = document.createElement("div");
 
     movieElement.className = "movie-grid";
@@ -241,7 +256,6 @@ async function addMovieList() {
     }
     movieContainer.innerHTML = ''; //Limpiar el contenedor antes de añadir nuevas peliculas
     const movies = await getMovies(selectCategorias.value);
-    console.log(movies);
     if (movies && movies.length > 0) {
         movies.forEach(movie => {
             const movieElement = createMovieListElement(movie);
