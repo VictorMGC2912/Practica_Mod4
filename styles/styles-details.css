@@ -1,0 +1,103 @@
+/* Estilos globales */
+html,
+body {
+  height: 100%; /* Asegurarse de que el HTML y el body ocupen el 100% de la altura */
+  margin: 0; /* Eliminar márgenes por defecto */
+  padding: 0; /* Eliminar padding por defecto */
+  font-family: "Arial", sans-serif;
+  background: url("https://example.com/background-image.jpg") no-repeat center
+    center fixed;
+  background-size: cover;
+  color: #fff;
+}
+
+#movie-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  padding: 20px; /* Espaciado para evitar que el contenido toque los bordes */
+}
+
+.movie-card {
+  display: flex;
+  gap: 20px;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.8
+  ); /* Fondo semitransparente para resaltar la película */
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 900px; /* Ancho máximo para la tarjeta */
+  width: 100%; /* Ancho completo para llenar el contenedor */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.movie-poster img {
+  max-width: 300px; /* Ancho máximo del póster */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.movie-details {
+  flex-grow: 1; /* Permitir que los detalles ocupen el espacio restante */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.movie-details h2 {
+  margin: 0 0 15px;
+  font-size: 24px;
+  color: #f39c12; /* Color para el título */
+}
+
+.movie-details p {
+  margin: 8px 0;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.actors,
+.director {
+  font-style: italic;
+  color: #ddd; /* Color para actores y director */
+}
+
+.rating {
+  font-weight: bold;
+  color: #f39c12; /* Color para la calificación */
+  font-size: 18px;
+}
+.actors {
+  margin-top: 20px; /* Espacio superior para separar de otros elementos */
+}
+
+.actor-list {
+  display: flex; /* Flexbox para alinear las imágenes de los actores en una fila */
+  gap: 15px; /* Espaciado entre las imágenes de los actores */
+  flex-wrap: wrap; /* Permitir que las imágenes se envuelvan en caso de que no quepan */
+}
+
+.actor {
+  display: flex;
+  flex-direction: column; /* Colocar la imagen encima del nombre */
+  align-items: center; /* Centrar los elementos */
+}
+
+.actor img {
+  width: 80px; /* Ancho fijo para las imágenes de los actores */
+  height: auto; /* Altura automática para mantener la proporción */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para las imágenes */
+  margin-bottom: 5px; /* Espacio entre la imagen y el nombre */
+}
+
+.actor p {
+  margin: 0; /* Sin márgenes en el nombre */
+  text-align: center; /* Centrar el nombre */
+  font-size: 14px; /* Tamaño de fuente más pequeño */
+  color: #fff; /* Color del texto */
+}

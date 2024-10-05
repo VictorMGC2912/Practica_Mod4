@@ -1,9 +1,10 @@
 import { listOptions } from "./listOptions-api";
-import { showMovieSearch, getMovieRecommendations, getMovieDetails } from "./movie-id-fetch";
+import { showMovieSearch } from "./movie-id-fetch";
 // import { searchString } from "./movie-search-api";
 // import { addMovieGrid, clickGrid, createMovieGridElement } from "./movie-grid-api";
 // import { addMovieList, clickList, createMovieListElement } from "./movie-list-api";
 //753342
+//showMovieSearchDetails(957452);
 // Crear container del select y botones
 
 const containerRoot = document.getElementById("root");
@@ -41,26 +42,6 @@ inputBusqueda.addEventListener('input', (event) => {
             const movieContainer = document.getElementById('movieContainer');
             movieContainer.innerHTML = '';
             datos.forEach(movie => {
-                const movieElement = createMovieGridElement(movie);
-                movieContainer.appendChild(movieElement);
-            })
-        } else {
-            console.log('no se encontraron resultados');
-        }
-    }).catch(error => {
-        console.log('error en la busqueda', error);
-    });
-});
-
-//Desde movie-id-fetch, me da los valores de la pelicula que le pase por ID en el input. SOLO LO PINTA EL JSON POR CONSOLA
-inputBusqueda.addEventListener('input', (event) => {
-    const inputMovieId = event.target.value;
-
-    getMovieDetails(inputMovieId).then((id) => {
-        if (id && id.length > 0) {
-            const movieContainer = document.getElementById('movieContainer');
-            movieContainer.innerHTML = '';
-            id.forEach(movie => {
                 const movieElement = createMovieGridElement(movie);
                 movieContainer.appendChild(movieElement);
             })
@@ -127,6 +108,13 @@ divRoot.className = "fondo-grid";
 divRoot.appendChild(movieContainer);
 
 //FUNCIONES PARA CREAR ELEMENTOS DE LAS PELICULAS GRID
+function createIdElement(id) {
+    const element = document.createElement("p");
+    element.className = 'movie-id';
+    element.textContent = id;
+    return element;
+}
+
 function createGridPosterElement(poster_path) {
     const img = document.createElement("img");
     img.src = `https://image.tmdb.org/t/p/w500${poster_path}`;
@@ -213,6 +201,7 @@ async function getMovies(userOption) {
         const url = `${baseUrl}${userOption}?api_key=${apiKey}&${langIso}`;
         const response = await fetch(url);
         const json = await response.json();
+        console.log(json);
         return json.results;
     } catch (error) {
         console.log(error);
@@ -228,6 +217,7 @@ export async function addMovieGrid() {
     }
     movieContainer.innerHTML = ''; //Limpiar el contenedor antes de añadir nuevas peliculas
     const movies = await getMovies(selectCategorias.value);
+
     if (movies && movies.length > 0) {
         movies.forEach(movie => {
             const movieElement = createMovieGridElement(movie);
@@ -236,17 +226,26 @@ export async function addMovieGrid() {
     }
 }
 
+
 export function createMovieGridElement(movieObj) {
     const movieElement = document.createElement("div");
 
     movieElement.className = "movie-grid";
+    movieElement.appendChild(createIdElement(movieObj.id));
     movieElement.appendChild(createGridPosterElement(movieObj.poster_path));
     movieElement.appendChild(createGridTitleElement(movieObj.original_title));
     movieElement.appendChild(createGridDataElement(movieObj.vote_average, movieObj.release_date));
     movieElement.appendChild(createGridDescriptionElement(movieObj.overview));
 
+    movieElement.addEventListener('click', () => {  //FUNCION PARA CLICKAR Y QUE NOS LLEVE A UNA PAGINA NUEVA CON EL ID DE ESA PELICULA
+        const movieUrl = `/movie-details.html?id=${movieObj.id}`;
+        window.open(movieUrl, '_blank');
+        console.log(movieUrl);
+    });
+
     return movieElement;
 }
+
 //FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE LIST
 async function addMovieList() {
     const movieContainer = document.getElementById('movieContainer');
@@ -370,3 +369,4 @@ function clickList() {
     actorsList.forEach((actors) => actors.classList.add('movie-actors-list'));
 }
 addMovieGrid();
+

@@ -68,8 +68,12 @@ svg {
 }
 .movie-grid {
   width: 280px;
+  height: 700px;
   display: flex;
   flex-direction: column;
+}
+.movie-id {
+  display: none;
 }
 .movie-poster-grid {
   border-radius: 8px;
@@ -109,52 +113,49 @@ svg {
 }
 .list {
   display: flex;
-  justify-content: start;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* Centra horizontalmente */
   gap: 25px;
   margin: 2em 2em 0 2em;
 }
 .movie-list {
-  width: 100em;
-  height: 3.125rem;
+  width: 100%; /* Ajusta al 100% del contenedor */
   display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
+  justify-content: space-between; /* Espacia los elementos horizontalmente */
+  align-items: center; /* Alinea verticalmente */
+  padding: 15px;
   border-bottom: 1px solid #ccc;
-  list-style-type: decimal;
+  list-style-type: none;
 }
 .movie-poster-list {
-  height: 3.125rem;
+  width: 50px;
+  height: 75px;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-right: 20px;
 }
 .movie-title-list {
-  display: flex;
-  justify-content: start;
-  padding: 7px 5px 0 20px;
-  width: auto;
+  flex: 1; /* Para que ocupe espacio dinámico */
   font-size: 1.1em;
   font-weight: bold;
   margin-right: 20px;
 }
 .movie-data-list {
-  width: 25em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 15em;
   font-size: 0.8em;
-  padding: 0 0px 20px 10px;
+  text-align: center;
 }
 .movie-description-list {
-  width: auto;
-  display: flex;
-  justify-content: start;
-  align-items: start;
-  margin: 6px 5px 5px 5px;
-  line-height: 1.4;
+  flex: 2; /* Para que la descripción ocupe más espacio */
+  max-height: 2.8em; /* Limita la altura para que solo muestre 2 líneas */
+  overflow: hidden; /* Oculta el contenido que sobrepase la altura */
+  text-overflow: ellipsis; /* Añade puntos suspensivos (...) */
+  white-space: nowrap; /* Mantiene el contenido en una sola línea */
+  transition: max-height 0.3s ease; /* Transición suave al pasar el ratón */
 }
-.movie-description-list:last-child {
-  border: none;
+
+/* Mostrar más contenido al pasar el ratón */
+.movie-list:hover .movie-description-list {
+  max-height: none; /* Elimina la restricción de altura al pasar el ratón */
+  white-space: normal; /* Permite que el texto ocupe varias líneas */
+  overflow: visible;
 }
