@@ -1,0 +1,161 @@
+body {
+  margin: 0;
+  margin: 0;
+  font-family: "helvetica", sans;
+  font-size: 13px;
+}
+/* BOTONES GRID Y LIST */
+.buttons-container {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  margin-right: 5px;
+  background-color: #070c12;
+  padding-top: 25px;
+  gap: 10px;
+}
+.fake-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  font-size: 2.5vh;
+}
+svg {
+  width: 1em;
+  height: 3em;
+}
+/* BOTONES DE CATEGORIAS, ORDENACION, BUSQUEDA, RESET */
+.select {
+  height: 2em;
+  width: 8em;
+  margin-bottom: 15px;
+  margin-right: 45px;
+}
+.ordenar {
+  height: 2em;
+  width: 11em;
+  margin-bottom: 15px;
+  margin-right: 45px;
+}
+.busqueda {
+  height: 1.55em;
+  width: 11em;
+  margin-bottom: 15px;
+  margin-right: 45px;
+}
+.reset {
+  height: 1.55em;
+  width: 7em;
+  margin-bottom: 15px;
+  margin-right: 45px;
+}
+/* VISTA GRID */
+.fondo-grid {
+  color: #c0c0c0;
+  background-color: #070c12;
+}
+.grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 30px;
+  min-height: 100vh;
+  gap: 25px;
+}
+.movie-grid {
+  width: 280px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+}
+.movie-id {
+  display: none;
+}
+.movie-poster-grid {
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.movie-title-grid {
+  margin-bottom: 2px;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.movie-data-grid {
+  font-size: 0.8em;
+  margin-bottom: 10px;
+}
+.movie-description-grid {
+  margin: 6px 0;
+  line-height: 1.4;
+  margin-bottom: 25px;
+}
+.movie-director-grid {
+  font-weight: bold;
+  line-height: 1.4;
+  padding: 5px 0;
+  border-bottom: 1px solid #c0c0c0;
+}
+.movie-description-grid:last-child {
+  border: none;
+}
+.movie-actors-grid {
+  font-weight: bold;
+  padding-right: 5px;
+}
+/* VISTA LIST */
+.fondo-list {
+  color: #c0c0c0;
+  background-color: #102947;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra horizontalmente */
+  gap: 25px;
+  margin: 2em 2em 0 2em;
+}
+.movie-list {
+  width: 100%; /* Ajusta al 100% del contenedor */
+  display: flex;
+  justify-content: space-between; /* Espacia los elementos horizontalmente */
+  align-items: center; /* Alinea verticalmente */
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+  list-style-type: none;
+}
+.movie-poster-list {
+  width: 50px;
+  height: 75px;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+.movie-title-list {
+  flex: 1; /* Para que ocupe espacio dinámico */
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-right: 20px;
+}
+.movie-data-list {
+  width: 15em;
+  font-size: 0.8em;
+  text-align: center;
+}
+.movie-description-list {
+  flex: 2; /* Para que la descripción ocupe más espacio */
+  max-height: 2.8em; /* Limita la altura para que solo muestre 2 líneas */
+  overflow: hidden; /* Oculta el contenido que sobrepase la altura */
+  text-overflow: ellipsis; /* Añade puntos suspensivos (...) */
+  white-space: nowrap; /* Mantiene el contenido en una sola línea */
+  transition: max-height 0.3s ease; /* Transición suave al pasar el ratón */
+}
+
+/* Mostrar más contenido al pasar el ratón */
+.movie-list:hover .movie-description-list {
+  max-height: none; /* Elimina la restricción de altura al pasar el ratón */
+  white-space: normal; /* Permite que el texto ocupe varias líneas */
+  overflow: visible;
+}

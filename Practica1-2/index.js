@@ -1,57 +1,39 @@
-import { listOptions } from "./listOptions-api";
-import { showMovieSearch } from "./movie-id-fetch";
-// import { searchString } from "./movie-search-api";
-// import { addMovieGrid, clickGrid, createMovieGridElement } from "./movie-grid-api";
-// import { addMovieList, clickList, createMovieListElement } from "./movie-list-api";
-//753342
-//showMovieSearchDetails(957452);
-// Crear container del select y botones
+import { movies, categories, opciones } from "./dataMovie";
+console.log(movies);
 
+// Crear container del select y botones
 const containerRoot = document.getElementById("root");
 const containerButton = document.createElement("div");
 containerButton.className = "buttons-container";
 containerRoot.appendChild(containerButton);
 
-//Crear elementos de entrada para filtros y botón de reset
+// Crear elementos de entrada para filtros y botón de reset
 const resetButton = document.createElement('button');
 resetButton.className = 'reset';
 resetButton.textContent = 'Reset Filtros';
+resetButton.addEventListener('click', resetFilters);
 containerButton.appendChild(resetButton);
-
-resetButton.addEventListener('click', resetFilters); // FUNCION PARA RESETEAR FILTROS
-function resetFilters() {
-    inputBusqueda.value = '';
-    selectCategorias.selectedIndex = 0;
-    addMovieGrid();
-}
 
 // Crear input de entrada de valores para la busqueda por coincidencias
 const inputBusqueda = document.createElement('input');
-inputBusqueda.setAttribute('id', 'search')
 inputBusqueda.setAttribute('type', 'text');
 inputBusqueda.setAttribute('placeholder', 'Buscar...');
 inputBusqueda.className = 'busqueda';
 containerButton.appendChild(inputBusqueda);
 
-//BUSQUEDA POR PALABRAS EN EL INPUT
-inputBusqueda.addEventListener('input', (event) => {
-    const inputValor = event.target.value;
+// Crear desplegable de ordenacion
+const selectOrdenar = document.createElement('select');
+selectOrdenar.setAttribute('name', 'ordenar');
+selectOrdenar.className = "ordenar";
 
-    showMovieSearch(inputValor).then((datos) => {
-        if (datos && datos.length > 0) {
-            const movieContainer = document.getElementById('movieContainer');
-            movieContainer.innerHTML = '';
-            datos.forEach(movie => {
-                const movieElement = createMovieGridElement(movie);
-                movieContainer.appendChild(movieElement);
-            })
-        } else {
-            console.log('no se encontraron resultados');
-        }
-    }).catch(error => {
-        console.log('error en la busqueda', error);
-    });
+// Agregar opciones de ordenación
+opciones.forEach(opcion => {
+    const optionElement = document.createElement('option');
+    optionElement.value = opcion.valor;
+    optionElement.textContent = opcion.texto;
+    selectOrdenar.appendChild(optionElement);
 });
+containerButton.appendChild(selectOrdenar);
 
 // Crear desplegable de categorias
 const selectCategorias = document.createElement('select');
@@ -60,13 +42,80 @@ selectCategorias.className = 'select';
 addFilterOptions(selectCategorias); // Añadir opciones de categorías
 containerButton.appendChild(selectCategorias);
 
-// // Funciones auxiliares existentes (addFilterOptions)
+// Función principal para aplicar todos los filtros
+let isClicked = false;
+function aplicarFiltros() {
+    const textoBusqueda = inputBusqueda.value.toLowerCase();
+    const criterioOrdenacion = selectOrdenar.value;
+    const categoriaSeleccionada = selectCategorias.value;
 
+    // Filtrar por búsqueda
+    let moviesFiltradas = movies.filter(movie =>
+        movie.title.toLowerCase().includes(textoBusqueda) ||
+        movie.director.toLowerCase().includes(textoBusqueda) ||
+        movie.description.toLowerCase().includes(textoBusqueda) ||
+        movie.year.toString().includes(textoBusqueda)
+    );
+
+    // Filtrar por categoría
+    if (categoriaSeleccionada !== 'default') {
+        moviesFiltradas = moviesFiltradas.filter(movie => movie.category === categoriaSeleccionada);
+    }
+
+    // Ordenar
+    switch (criterioOrdenacion) {
+        case 'tituloAsc':
+            moviesFiltradas.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        case 'tituloDesc':
+            moviesFiltradas.sort((a, b) => b.title.localeCompare(a.title));
+            break;
+        case 'directorAsc':
+            moviesFiltradas.sort((a, b) => a.director.localeCompare(b.director));
+            break;
+        case 'directorDesc':
+            moviesFiltradas.sort((a, b) => b.director.localeCompare(a.director));
+            break;
+        case 'añoAsc':
+            moviesFiltradas.sort((a, b) => a.year - b.year);
+            break;
+        case 'añoDesc':
+            moviesFiltradas.sort((a, b) => b.year - a.year);
+            break;
+    }
+
+    //Mostrar resultados filtrados
+    if (movieContainer.classList.contains('grid')) {
+        createMovieGridElement(moviesFiltradas); // Pinta las películas en modo grid
+    } else if (movieContainer.classList.contains('list')) {
+        createMovieListElement(moviesFiltradas); // Pinta las películas en modo list
+    }
+}
+
+// Eventos de cambio para aplicar filtros
+inputBusqueda.addEventListener('input', aplicarFiltros);
+selectOrdenar.addEventListener('change', aplicarFiltros);
+selectCategorias.addEventListener('change', aplicarFiltros);
+
+// Función para resetear filtros
+function resetFilters() {
+    inputBusqueda.value = '';
+    selectOrdenar.selectedIndex = 0;
+    selectCategorias.selectedIndex = 0;
+    aplicarFiltros(); // Volver a aplicar filtros con valores por defecto
+}
+
+// Funciones auxiliares existentes (addFilterOptions)
 function addFilterOptions(select) {
-    Object.entries(listOptions).forEach(([key, value]) => {
+    const defaultOption = document.createElement('option');
+    defaultOption.value = 'default';
+    defaultOption.textContent = 'Mostrar Todas';
+    select.appendChild(defaultOption);
+
+    Object.entries(categories).forEach(([key, value]) => {
         const option = document.createElement('option');
-        option.value = value;
-        option.textContent = key;
+        option.value = key;
+        option.textContent = value;
         select.appendChild(option);
     });
 }
@@ -101,178 +150,122 @@ buttonGrid.appendChild(svgGrid);
 
 //AÑADIR PELICULAS A ROOT
 const movieContainer = document.createElement("div");
-movieContainer.setAttribute('id', 'movieContainer');
 movieContainer.className = "grid";
+const movieElement = createMovieGridElement(movies);
 const divRoot = document.getElementById("root");
 divRoot.className = "fondo-grid";
 divRoot.appendChild(movieContainer);
 
-//FUNCIONES PARA CREAR ELEMENTOS DE LAS PELICULAS GRID
-function createIdElement(id) {
-    const element = document.createElement("p");
-    element.className = 'movie-id';
-    element.textContent = id;
+//FUNCIONES PARA CREAR ELEMENTOS DE LAS PELICULAS
+function createGridPosterElement(poster) {
+    const element = document.createElement("img");
+    element.src = poster;
+    element.className = 'movie-poster-grid';
     return element;
 }
 
-function createGridPosterElement(poster_path) {
-    const img = document.createElement("img");
-    img.src = `https://image.tmdb.org/t/p/w500${poster_path}`;
-    img.alt = "Movie Poster";
-    img.className = 'movie-poster-grid';
-    return img;
-}
-
-function createGridTitleElement(original_title) {
+function createGridTitleElement(title) {
     const element = document.createElement("div");
     element.className = "movie-title-grid";
-    element.textContent = original_title;
+    element.textContent = title;
     return element;
 }
 
-function createGridDataElement(vote_average, release_date) {
+function createGridDataElement(rating, year) {
     const element = document.createElement("div");
     element.className = "movie-data-grid";
-    const releaseDate = release_date.split("-").shift();
-    const voteAverage = vote_average.toFixed(2);
-    element.textContent = `Rating: ${voteAverage} | ${releaseDate}`;
+    element.textContent = `Rating: ${rating} | ${year}`;
     return element;
 }
 
-function createGridDescriptionElement(overview) {
+function createGridDescriptionElement(description) {
     const element = document.createElement("div");
     element.className = "movie-description-grid";
-    element.textContent = overview;
+    element.textContent = description;
     return element;
+}
+
+function createGridDirectorElement(director) {
+    const element = document.createElement("div");
+    element.className = "movie-director-grid";
+    element.textContent = `Director: ${director}`;
+    return element;
+}
+
+function createGridActorsElement(actors) {
+    const element = document.createElement("div");
+    element.className = "movie-actors-grid";
+    element.textContent = `Actors: ${actors}`;
+    return element
 }
 
 //FUNCIONES PARA CREAR ELEMENTOS DE LAS PELICULAS LIST
-function createListPosterElement(poster_path) {
-    const img = document.createElement("img");
-    img.src = `https://image.tmdb.org/t/p/w500${poster_path}`;
-    img.alt = "Movie Poster";
-    img.className = 'movie-poster-list';
-    return img;
+function createListPosterElement(poster) {
+    const element = document.createElement("img");
+    element.src = poster;
+    element.className = 'movie-poster-list';
+    return element;
 }
 
-function createListTitleElement(original_title) {
+function createListTitleElement(title) {
     const element = document.createElement("div");
     element.className = "movie-title-list";
-    element.textContent = original_title;
+    element.textContent = title;
     return element;
 }
 
-function createListDataElement(vote_average, release_date) {
+function createListDataElement(rating, year) {
     const element = document.createElement("div");
     element.className = "movie-data-list";
-    const releaseDate = release_date.split("-").shift();
-    const voteAverage = vote_average.toFixed(2);
-    element.textContent = `Rating: ${voteAverage} | ${releaseDate}`;
+    element.textContent = `Rating: ${rating} | ${year}`;
     return element;
 }
-function createListDescriptionElement(overview) {
+
+function createListDescriptionElement(description) {
     const element = document.createElement("div");
     element.className = "movie-description-list";
-    element.textContent = overview;
+    element.textContent = description;
     return element;
-}
-
-// Traer las películas desde la API
-const baseUrl = `https://api.themoviedb.org/3/movie/`;
-const apiKey = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
-const langIso = 'language=es-ES';
-
-//Agregar las películas al contenedor en forma de grid o list, segun la clase que tenga.
-selectCategorias.addEventListener('change', function () {
-    const selectCategory = this.value;
-    //QUIERO QUE SI EL MOVIECONTAINER ESTA EN GRID, ME SIGA FILTRANDO LAS CATEGORIAS POR GRID, IDEM CON LIST, PERO ME ESTA FALLANDO, SOLO FILTRA EN MODO GRID
-    if (movieContainer.querySelectorAll('grid')) {
-
-        const movies = getMovies(selectCategory);
-        addMovieGrid(movies);
-    } else {
-        const movies = getMovies(selectCategory);
-        addMovieList(movies);
-    }
-});
-
-async function getMovies(userOption) {
-    try {
-        const url = `${baseUrl}${userOption}?api_key=${apiKey}&${langIso}`;
-        const response = await fetch(url);
-        const json = await response.json();
-        console.log(json);
-        return json.results;
-    } catch (error) {
-        console.log(error);
-    }
 }
 
 //FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE GRID
-export async function addMovieGrid() {
-    const movieContainer = document.getElementById('movieContainer');
-    if (!movieContainer) {
-        console.error('No se el contenedor de peliculas');
-        return;
-    }
-    movieContainer.innerHTML = ''; //Limpiar el contenedor antes de añadir nuevas peliculas
-    const movies = await getMovies(selectCategorias.value);
+function createMovieGridElement(movies) {
+    let container = movieContainer;
+    container.innerHTML = "";
 
-    if (movies && movies.length > 0) {
-        movies.forEach(movie => {
-            const movieElement = createMovieGridElement(movie);
-            movieContainer.appendChild(movieElement);
-        })
-    }
-}
+    movies.forEach((movie) => {
+        const { poster, title, rating, year, description, director, actors } = movie;
+        const movieElement = document.createElement("div");
 
+        movieElement.className = "movie-grid";
+        movieElement.appendChild(createGridPosterElement(poster));
+        movieElement.appendChild(createGridTitleElement(title));
+        movieElement.appendChild(createGridDataElement(rating, year));
+        movieElement.appendChild(createGridDescriptionElement(description));
+        movieElement.appendChild(createGridDirectorElement(director));
+        movieElement.appendChild(createGridActorsElement(actors));
 
-export function createMovieGridElement(movieObj) {
-    const movieElement = document.createElement("div");
-
-    movieElement.className = "movie-grid";
-    movieElement.appendChild(createIdElement(movieObj.id));
-    movieElement.appendChild(createGridPosterElement(movieObj.poster_path));
-    movieElement.appendChild(createGridTitleElement(movieObj.original_title));
-    movieElement.appendChild(createGridDataElement(movieObj.vote_average, movieObj.release_date));
-    movieElement.appendChild(createGridDescriptionElement(movieObj.overview));
-
-    movieElement.addEventListener('click', () => {  //FUNCION PARA CLICKAR Y QUE NOS LLEVE A UNA PAGINA NUEVA CON EL ID DE ESA PELICULA
-        const movieUrl = `/movie-details.html?id=${movieObj.id}`;
-        window.open(movieUrl, '_blank');
-        console.log(movieUrl);
-    });
-
-    return movieElement;
+        container.appendChild(movieElement);
+    })
 }
 
 //FUNCION PARA AÑADIR LOS ELEMENTOS AL BODY EN FORMA DE LIST
-async function addMovieList() {
-    const movieContainer = document.getElementById('movieContainer');
-    if (!movieContainer) {
-        console.error('No se el contenedor de peliculas');
-        return;
-    }
-    movieContainer.innerHTML = ''; //Limpiar el contenedor antes de añadir nuevas peliculas
-    const movies = await getMovies(selectCategorias.value);
-    if (movies && movies.length > 0) {
-        movies.forEach(movie => {
-            const movieElement = createMovieListElement(movie);
-            movieContainer.appendChild(movieElement);
-        })
-    }
-}
+function createMovieListElement(movies) {
+    let container = movieContainer;
+    container.innerHTML = "";
 
-function createMovieListElement(movieObj) {
-    const movieElement = document.createElement("div");
+    movies.forEach((movie) => {
+        const { poster, title, description, rating, year } = movie;
+        const movieElement = document.createElement("div");
 
-    movieElement.className = "movie-list";
-    movieElement.appendChild(createListPosterElement(movieObj.poster_path));
-    movieElement.appendChild(createListTitleElement(movieObj.original_title));
-    movieElement.appendChild(createListDescriptionElement(movieObj.overview));
-    movieElement.appendChild(createListDataElement(movieObj.vote_average, movieObj.release_date));
+        movieElement.className = "movie-list";
+        movieElement.appendChild(createListPosterElement(poster));
+        movieElement.appendChild(createListTitleElement(title));
+        movieElement.appendChild(createListDescriptionElement(description));
+        movieElement.appendChild(createListDataElement(rating, year));
 
-    return movieElement;
+        container.appendChild(movieElement);
+    })
 }
 
 // ESCUCHA DE LOS EVENTOS CLICK
@@ -280,24 +273,22 @@ buttonGrid.addEventListener('click', clickGrid);
 buttonList.addEventListener('click', clickList);
 
 function clickGrid() {
-    addMovieGrid(); // Cargar las películas en formato de grid
+    movieContainer.innerHTML = "";
+    isClicked = false;
+    const movieElement = createMovieGridElement(movies);
 
-    // Cambiar la clase del contenedor para la vista de grid
     const fondoGrid = document.querySelectorAll('.fondo-list');
     fondoGrid.forEach((grid) => grid.classList.remove('fondo-list'));
     fondoGrid.forEach((grid) => grid.classList.add('fondo-grid'));
 
-    // Cambiar la vista de grid a grid
     const vistaGrid = document.querySelectorAll('.list');
     vistaGrid.forEach((grid) => grid.classList.remove('list'));
     vistaGrid.forEach((grid) => grid.classList.add('grid'));
 
-    // Cambiar cada película de "movie-list" a "movie-grid"
     const movieList = document.querySelectorAll('.movie-list')
     movieList.forEach((movie) => movie.classList.remove('movie-list'));
     movieList.forEach((movie) => movie.classList.add('movie-grid'));
 
-    // Cambiar las clases de los elementos de las películas
     const posterList = document.querySelectorAll('.movie-poster-list');
     posterList.forEach((poster) => poster.classList.remove('movie-poster-list'));
     posterList.forEach((poster) => poster.classList.add('movie-poster-grid'));
@@ -314,7 +305,6 @@ function clickGrid() {
     descriptionList.forEach((description) => description.classList.remove('movie-description-list'));
     descriptionList.forEach((description) => description.classList.add('movie-description-grid'));
 
-    // Otras clases si son necesarias (directores, actores)
     const directorList = document.querySelectorAll('.movie-director-list');
     directorList.forEach((director) => director.classList.remove('movie-director-list'));
     directorList.forEach((director) => director.classList.add('movie-director-grid'));
@@ -324,25 +314,24 @@ function clickGrid() {
     actorsList.forEach((actors) => actors.classList.add('movie-actors-grid'));
 
 }
-function clickList() {
-    addMovieList(); // Cargar las películas en formato de lista
 
-    // Cambiar la clase del contenedor para la vista de lista
+function clickList() {
+    movieContainer.innerHTML = "";
+    isClicked = true;
+    const movieElement = createMovieListElement(movies);
+
     const fondoList = document.querySelectorAll('.fondo-grid');
     fondoList.forEach((list) => list.classList.remove('fondo-grid'));
     fondoList.forEach((list) => list.classList.add('fondo-list'));
 
-    // Cambiar la vista de grid a list
     const vistaList = document.querySelectorAll('.grid');
     vistaList.forEach((list) => list.classList.remove('grid'));
     vistaList.forEach((list) => list.classList.add('list'));
 
-    // Cambiar cada película de "movie-grid" a "movie-list"
-    const movieList = document.querySelectorAll('.movie-grid');
+    const movieList = document.querySelectorAll('.movie-grid')
     movieList.forEach((movie) => movie.classList.remove('movie-grid'));
     movieList.forEach((movie) => movie.classList.add('movie-list'));
 
-    // Cambiar las clases de los elementos de las películas //NO ESTA CAMBIANDO LAS CLASES A PARTIR DE AQUI, PUEDE SER PORQUE ME EN LAS FUNCIONES DE CREAR 
     const posterList = document.querySelectorAll('.movie-poster-grid');
     posterList.forEach((poster) => poster.classList.remove('movie-poster-grid'));
     posterList.forEach((poster) => poster.classList.add('movie-poster-list'));
@@ -359,7 +348,6 @@ function clickList() {
     descriptionList.forEach((description) => description.classList.remove('movie-description-grid'));
     descriptionList.forEach((description) => description.classList.add('movie-description-list'));
 
-    // Otras clases si son necesarias (directores, actores)
     const directorList = document.querySelectorAll('.movie-director-grid');
     directorList.forEach((director) => director.classList.remove('movie-director-grid'));
     directorList.forEach((director) => director.classList.add('movie-director-list'));
@@ -368,5 +356,3 @@ function clickList() {
     actorsList.forEach((actors) => actors.classList.remove('movie-actors-grid'));
     actorsList.forEach((actors) => actors.classList.add('movie-actors-list'));
 }
-addMovieGrid();
-

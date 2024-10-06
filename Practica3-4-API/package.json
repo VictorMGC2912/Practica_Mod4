@@ -1,0 +1,15 @@
+{
+  "name": "practica-mod4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index-api.js",
+  "type": "module",
+  "scripts": {
+    "serve": "vite --host localhost --port 8080"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

@@ -1,4 +1,3 @@
-
 //APLICAR FILTRO DE ID PELICULA
 
 const baseUrl = `https://api.themoviedb.org/3/movie/`;
@@ -43,14 +42,13 @@ export async function showMovieSearchDetails(movieId) {
 
     //INFO DE LOS ACTORES Y DIRECTORES
     const { cast, crew } = creditsData;
-    const actors = cast.map(member => member.name).slice(0, 5).join(', ');
-    const profileActors = cast.map(profile => profile.profile_path).slice(0, 5);
+    const actors = cast.slice(0, 5).map(actor => ({
+        name: actor.name,
+        profile_path: actor.profile_path
+    })); // Crear un array con ambos nombre y ruta de imagen
     const director = crew.find(member => member.job.toLowerCase() === 'director')?.name ?? 'Not available';
-
     //PASAMOS LOS DATOS QUE NOS INTERESA PARA PINTARLOS EN LA PANTALLA
-    const movie = { id, categories, original_title, overview, poster_path, release_date, vote_average, actors, profileActors, director };
-    console.log(movie);
-    //document.querySelector('pre').innerHTML = JSON.stringify(movie, false, 2)
+    const movie = { id, categories, original_title, overview, poster_path, release_date, voteAverage: vote_average.toFixed(2), actors, director };
 
     // Pinta los detalles en el contenedor de la película
     const container = document.getElementById('movie-container');
@@ -63,13 +61,12 @@ export async function showMovieSearchDetails(movieId) {
                 <h2>${movie.original_title} (${movie.release_date.slice(0, 4)})</h2>
                 <p><strong>Categorías:</strong> ${movie.categories}</p>
                 <p><strong>Resumen:</strong> ${movie.overview}</p>
-                <p class="rating">Rating: ${movie.vote_average}</p>
-                <p class="actors"><strong>Actores principales:</strong> ${movie.actors}</p>
+                <p class="rating">Rating: ${movie.voteAverage}</p>
                 <p class="director"><strong>Director:</strong> ${movie.director}</p>
                 <div class="actors">
                     <strong>Actores principales:</strong>
                     <div class="actor-list">
-                        ${profileActors.map(actor => `
+                        ${movie.actors.map(actor => `
                             <div class="actor">
                                 <img src="https://image.tmdb.org/t/p/w500/${actor.profile_path}" alt="${actor.name}">
                                 <p>${actor.name}</p>
@@ -82,23 +79,6 @@ export async function showMovieSearchDetails(movieId) {
     `;
 }
 //------------------------------------------------------------------------------------------------------//
-//Busqueda por recomendaciones
-async function fetchMovieRecommendations(movieId) {
-    const url = `${baseUrl}/${movieId}/recommendations?api_key=${apiKey}&${langIso}`;
-    const response = await fetch(url);
-    const json = await response.json();
-    return json.results;
-}
-
-export async function getMovieRecommendations(movieId) {
-    const moviesData = await fetchMovieRecommendations(movieId);
-
-    return moviesData.slice(0, 4).map(movie => {
-        const { id, genre_ids, original_title, overview, poster_path, release_date, vote_average } = movie;
-        return { id, genre_ids, original_title, overview, poster_path, release_date, vote_average };
-    })
-}
-
 //BBUSQUEDA POR STRING QUE LE PASAMOS POR EL INPUT
 async function fetchSearchMovie(searchString) {
     const searchBaseUrl = 'https://api.themoviedb.org/3/search/movie';

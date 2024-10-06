@@ -1,14 +1,15 @@
 /* Estilos globales */
 html,
 body {
-  height: 100%; /* Asegurarse de que el HTML y el body ocupen el 100% de la altura */
-  margin: 0; /* Eliminar márgenes por defecto */
-  padding: 0; /* Eliminar padding por defecto */
+  height: 100%;
+  margin: 0;
+  padding: 0;
   font-family: "Arial", sans-serif;
   background: url("https://example.com/background-image.jpg") no-repeat center
     center fixed;
   background-size: cover;
   color: #fff;
+  background-color: rgb(40, 43, 43);
 }
 
 #movie-container {
@@ -71,8 +72,9 @@ body {
   color: #f39c12; /* Color para la calificación */
   font-size: 18px;
 }
+
 .actors {
-  margin-top: 20px; /* Espacio superior para separar de otros elementos */
+  margin-top: 15px; /* Espacio superior para separar de otros elementos */
 }
 
 .actor-list {
@@ -88,6 +90,7 @@ body {
 }
 
 .actor img {
+  margin-top: 10px;
   width: 80px; /* Ancho fijo para las imágenes de los actores */
   height: auto; /* Altura automática para mantener la proporción */
   border-radius: 8px; /* Bordes redondeados */

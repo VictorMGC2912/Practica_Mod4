@@ -7,10 +7,6 @@ export const listOptions = Object.freeze({
 });
 
 export function addFilterOptions(select) {
-    // const defaultOption = document.createElement('option');
-    // defaultOption.value = 'default';
-    // defaultOption.textContent = 'Mostrar Todas';
-    // select.appendChild(defaultOption);
 
     Object.entries(listOptions).forEach(([key, value]) => {
         const option = document.createElement('option');
